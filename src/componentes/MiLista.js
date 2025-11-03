@@ -1,9 +1,10 @@
-import './App.css';
-import React from 'react';
 
-class MiLista extends React.Component {
-    incidencias = [
-        {
+import React, {useState} from 'react';
+
+
+function MiLista() {
+    const[incidencias, setIncidencias] = useState ([
+                {
             id_incidencia: 1,
             id_usuario: 'e546754k',
             titulo: "Proyector averiado en el aula 302",
@@ -114,25 +115,48 @@ class MiLista extends React.Component {
             ubicacion: "A307" 
         }
     ]
+)
+
+  agregarIncidencia = (id_nuevo) => {
+
+  const nueva_incidencia={
+    id_incidencia: this.state.incidencias.length + 1,
+    id_usuario: usuario_nuevo,
+    titulo: titulo_nuevo,
+    descripcion: descripcion_nuevo,
+    categoria: categoria_nuevo,
+    nivel_urgencia: nivelurgencia_nuevo,
+    fecha_registro: fecharegistro_nuevo,
+    estado: "Abierta",
+    ubicacion: ubicacion_nuevo
+
+
+
+  }
+  this.setState({incidencias:[...this.state.incidencias, nueva_incidencia]});
+
+  };
     
-    render(){
+       
         return(
-            <div>
-                <ul>
-                    {this.incidencias.map((i)=> 
-                    (<li><strong>Titulo :</strong> {i.titulo}. <br/>
-                         <strong>Descripcion :</strong> {i.descripcion}. <br/>
-                         <strong>Usuario :</strong>{i.id_usuario}.<br/>
-                         <strong>Ubicacion :</strong>{i.ubicacion}.
-                    </li>
+            <>
+                <dl>
+                    {incidencias.map((i)=> 
+                    (<React.Fragment key={i.id_incidencia}>
+                        <dt><strong>Titulo :</strong> {i.titulo}.<br/></dt>
+                        <dd><strong>Descripcion :</strong> {i.descripcion}. <br/></dd>
+                         <dd><strong>Usuario :</strong>{i.id_usuario}.<br/></dd>
+                         <dd><strong>Urgencia :</strong>{i.nivel_urgencia}.<br/></dd>
+                         <dd><strong>Ubicacion :</strong>{i.ubicacion}.</dd>
+                    </React.Fragment>
 
                     ))}
-                </ul>
-            </div>
+                </dl>
+            </>
 
         );
 
-    }
+    
 }
 
 export default MiLista;
