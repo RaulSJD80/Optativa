@@ -2,8 +2,9 @@
 import React, {useState} from 'react';
 
 
+
 function MiLista() {
-    const[incidencias, setIncidencias] = useState ([
+    state = {incidencias: [
                 {
             id_incidencia: 1,
             id_usuario: 'e546754k',
@@ -113,10 +114,13 @@ function MiLista() {
             fecha_registro: "2025-10-28",
             estado: "En proceso",
             ubicacion: "A307" 
-        }
-    ]
-)
+         }
+         ]
+    }
+            
+    
 
+{
   agregarIncidencia = (id_nuevo) => {
 
   const nueva_incidencia={
@@ -129,14 +133,12 @@ function MiLista() {
     fecha_registro: fecharegistro_nuevo,
     estado: "Abierta",
     ubicacion: ubicacion_nuevo
-
-
-
   }
-  this.setState({incidencias:[...this.state.incidencias, nueva_incidencia]});
+
+ this.setState({incidencias:[...this.state.incidencias, nueva_incidencia]});
 
   };
-    
+  }  
        
         return(
             <>
