@@ -1,18 +1,21 @@
 import './App.css';
-import React from 'react';
+import MiLista from'../MiLista';
+import {useState} from 'react';
 import Header from '../header/Header';
 import Footer from '../footer/Footer';
 
-import Formulario from '../Formulario';
+import Form from '../Formulario';
 
 
 
-class App extends React.Component{
+function App (){
 
-  incidencias = [
+
+const [incidencias, setIncidencias] = useState ([
+  
                 {
             id_incidencia: 1,
-            id_usuario: 'e546754k',
+            id_usuario: "e546754k",
             titulo: "Proyector averiado en el aula 302",
             descripcion: "El proyector no enciende y la lampara esta dañada",
             categoria: "Hardware",
@@ -118,72 +121,62 @@ class App extends React.Component{
             descripcion: "El programa de Matematicas no se ejevcuta en varios equipos",
             categoria: "Software",
             nivel_urgencia: "Alta",
-            fecha_registro: "2025-10-28",
+            fecha_registro: "2025-10-26",
             estado: "En proceso",
             ubicacion: "A307" 
          }
-        ]
-    
+        ]);
+  
+      
+      const agregarIncidencia = (  nuevo_usuario, nuevo_titulo, nuevo_descripcion, nuevo_categoria, nuevo_nivel_urgencia,
+    nuevo_ubicacion ) => {
 
-  fechaFormateada = (fecha_registro) => {
-  const fecha = new Date();
-  const year = fecha.getFullYear();
-  const month = String(fecha.getMonth() + 1).padStart(2, '0'); // meses 0-11
-  const day = String(fecha.getDate()).padStart(2, '0');
-  const fechaFormateada = `${year}-${month}-${day}`;
-  }
+      const fecha = new Date();
+      const year = fecha.getFullYear();
+      const month = String(fecha.getMonth() + 1).padStart(2, '0'); // meses 0-11
+      const day = String(fecha.getDate()).padStart(2, '0');
+      const fechaFormateada = `${year}-${month}-${day}`;
 
-
-
-  agregarIncidencia = (nuevo_id_incidencia, nuevo_titulo, nuevo_usuario, nuevo_descripcion, nuevo_categoria, nuevo_nivel_urgencia,
-    nuevo_estado, nuevo_ubicacion, nuevo_fecha_registro) => {
+       
 
       const nueva_incidencia = {
-        id_incidencia: this.state.incidencias.lenght +1,
+        id_incidencia: incidencias.length + 1,
         usuario: nuevo_usuario,
-        titulo: nuevo_titulo,
+        titulo: nuevo_titulo,            
         descripcion: nuevo_descripcion,
         categoria: nuevo_categoria,
         nivel_urgencia: nuevo_nivel_urgencia,
+       fecha_registro: fechaFormateada,
         estado: "Abierta",
-        ubicacion: nuevo_ubicacion,
-        fecha_registro: this.fechaFormateada
+        ubicacion: nuevo_ubicacion
+        
       }
-      this.setState({
-        incidencias: [...this.state.incidenecias, nueva_incidencia]
-      })
+      setIncidencias(
+       [...incidencias, nueva_incidencia]
+      );
 
       console.log("datos recibidos", nueva_incidencia);
     }
-  
+
+
+
 
   
 
-  render(){
+  
+
+  
   return (
     <>
     <Header/>
       <h2>Mi Aplicacion</h2>
-      <div id = "contenedor-incidencias">
+      <div className = "contenedor-incidencias">
         <main>
-          <p>Esta aplicacion mueestra el contenido almacenado de mi app:</p>
-            <ul>
-              {state.incidencias.map(i =>(
-                <li key={i.incidenecia}>
-                  <strong>Titulo: </strong>{i.titulo}<br/>
-                  <strong>ID: </strong>{i.id_incidencia}<br/>
-                  <strong>Descripcion: </strong>{i.descripcion}<br/>
-                  <strong>Usuario: </strong>{i.usuario}<br/>
-                  <strong>Urgencia: </strong>{i.nivel}<br/>
-                  <strong>Ubicacion: </strong>{i.ubicacion}<br/>
-                  <strong>Estado: </strong>{i.estado}<br/>
-                  <strong>Fecha Registro: </strong>{i.fecha_registro}<br/>
-                </li>
-              ))}
-            </ul>
+          <p>Esta aplicacion muestra el contenido almacenado de mi app:</p>
+           <MiLista incidencias = {incidencias}/>
         </main>
         <aside>
-          <Formulario agregarIncidencia = {agregarIncidencia}/>  
+          <Form agregarIncidencia = {agregarIncidencia}/>  
         </aside>
       </div>
     <Footer/>
@@ -195,7 +188,7 @@ class App extends React.Component{
     
   );
 }
-}
+
 
 
 

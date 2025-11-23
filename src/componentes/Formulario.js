@@ -1,44 +1,50 @@
-import React from 'react';
+import {useState} from 'react';
 import './Form.css';
 
 
-class Form extends React.Component{
+function Form (props){
 
-    envioFormulario = event =>{
+    const envioFormulario = (event) =>{
         event.preventDefault();
         const form = event.target;
-        this.props.agregarIncidencia(form.titulo.value, form.usuario.value, form.descripcion.value,
+        props.agregarIncidencia(form.titulo.value, form.usuario.value,  form.descripcion.value,
             form.categoria.value, form.urgencia.value, form.ubicacion.value
         );
     };
 
-    render(){
+    
         return(
             <div>
                 <h2>Registrar Incidencia</h2>
-                <form onSubmit={this.envioFormularo}>
+                <form onSubmit={props.envioFormulario}>
+                    
                     {/*Id Incidencia*/}
-                    <div class ="elemento-form">
+                    <div class ="element-form">
                         <label>Id Incidencia</label>
-                        <input type = "number" name ="id incidencia" placeholder="Ej: 1,2,3,..." reqired/>
+                        <input type = "number" name = "id" placeholder="Ej: 1,2,3,..." reqired/>                        
                     </div>
+                    <br></br>
+                 
+                    {/*Usuario*/}
+                    <div class = "element-form">
+                        <label>Usuario</label>
+                        <input type = "text" name = "usuario" placeholder = "Ej: 2548136678L" required/>
+                    </div>
+                    <br></br>
                     {/*Titulo*/}
                     <div class ="element-form">
                         <label>Titulo</label>
                         <input type ="text" name = "titulo" placeholder="Ej: No funciona el raton" required/>
                     </div>
-                    {/*Usuario*/}
-                    <div class = "elemnt-form">
-                        <label>Usuario</label>
-                        <input type = "text" name = "usuario" placeholder = "Ej: 2548136678L" required/>
-                    </div>
+                    <br></br>
                     {/*Descripcion*/}
-                    <div class = "elemnt-form">
+                    <div class = "element-form">
                         <label>Descripción</label>
                         <textarea name = "descripcion" required/>
                     </div>
+                    <br></br>
                     {/*Categoria*/}
-                    <div class = "elemnt-form">
+                    <div class = "element-form">
                         <label>Categoria</label>
                         <select name = "categoria" required>
                             <option value>Seleccionar...</option>
@@ -49,8 +55,9 @@ class Form extends React.Component{
                             <option>Infraestructura</option>
                         </select>
                     </div>
+                    <br></br>
                     {/*Urgencia*/}
-                    <div class ="elemnt-form">
+                    <div class ="element-form">
                         <label>Nivel de Urgencia</label>
                         <select name ="urgencia" required>
                             <option value>Seleccionar...</option>
@@ -59,6 +66,7 @@ class Form extends React.Component{
                             <option>Baja</option>
                         </select>
                     </div>
+                    <br></br>
                     {/*Estado*/}
                     <div class ="element-form">
                         <label>Estado</label>
@@ -69,24 +77,27 @@ class Form extends React.Component{
                             <option>Cerrada</option>
                         </select>
                     </div>
-                    {/*Fecha de Reagistro*/}
-                    <div class = "elemnt-form">
+                    <br></br>
+                    {/*Fecha de Registro*/}
+                    <div class = "element-form">
                         <label>Fecha de Registro</label>
                         <input type="text" name ="fecha" required/>
                     </div>
+                    <br></br>
                     {/*Ubicacion*/}
-                    <div class ="elemnt-form">
+                    <div class ="element-form">
                         <label>Ubicacion</label>
                         <input type ="text" name ="ubicacion" placeholder="Ej: B205" required/>
                     </div>
+                    <br></br>
                     {/*Boton*/}           
                     <button type = "submit" class ="element-for-button">Registrar</button>
                  </form>
             </div>
         )
     }
-}
 
 
 
-export default Formulario;
+
+export default Form;
