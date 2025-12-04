@@ -7,7 +7,7 @@ function Form (props){
     const envioFormulario = (event) =>{
         event.preventDefault();
         const form = event.target;
-        props.agregarIncidencia(form.titulo.value, form.usuario.value,  form.descripcion.value,
+        props.agregarIncidencia(form.usuario.value, form.titulo.value,  form.descripcion.value,
             form.categoria.value, form.urgencia.value, form.ubicacion.value
         );
     };
@@ -31,18 +31,21 @@ function Form (props){
                         <input type = "text" name = "usuario" placeholder = "Ej: 2548136678L" required/>
                     </div>
                     <br></br>
+                    
                     {/*Titulo*/}
                     <div class ="element-form">
                         <label>Titulo</label>
                         <input type ="text" name = "titulo" placeholder="Ej: No funciona el raton" required/>
                     </div>
                     <br></br>
+
                     {/*Descripcion*/}
                     <div class = "element-form">
                         <label>Descripción</label>
                         <textarea name = "descripcion" required/>
                     </div>
                     <br></br>
+
                     {/*Categoria*/}
                     <div class = "element-form">
                         <label>Categoria</label>
@@ -56,6 +59,7 @@ function Form (props){
                         </select>
                     </div>
                     <br></br>
+
                     {/*Urgencia*/}
                     <div class ="element-form">
                         <label>Nivel de Urgencia</label>
@@ -67,6 +71,7 @@ function Form (props){
                         </select>
                     </div>
                     <br></br>
+
                     {/*Estado*/}
                     <div class ="element-form">
                         <label>Estado</label>
@@ -78,18 +83,21 @@ function Form (props){
                         </select>
                     </div>
                     <br></br>
+                    
                     {/*Fecha de Registro*/}
                     <div class = "element-form">
                         <label>Fecha de Registro</label>
                         <input type="text" name ="fecha" required/>
                     </div>
                     <br></br>
+                    
                     {/*Ubicacion*/}
                     <div class ="element-form">
                         <label>Ubicacion</label>
                         <input type ="text" name ="ubicacion" placeholder="Ej: B205" required/>
                     </div>
                     <br></br>
+
                     {/*Boton*/}           
                     <button type = "submit" class ="element-for-button">Registrar</button>
                  </form>

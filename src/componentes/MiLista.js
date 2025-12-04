@@ -7,6 +7,8 @@ import React from 'react';
 
 function MiLista(props) {
     
+ 
+  
        
         return(
             <>
@@ -16,8 +18,8 @@ function MiLista(props) {
                      
               {props.incidencias.map((i) =>(
                 <li key = {i.id}>
-                  <strong>ID: </strong>{i.id}<br/>
-                  <strong>Usuario: </strong>{i.usuario}<br/>
+                  <strong>ID: </strong>{i.id_incidencia}<br/>
+                  <strong>Usuario: </strong>{i.id_usuario}<br/>
                   <strong>Titulo: </strong>{i.titulo}<br/>
                   <strong>Descripcion: </strong>{i.descripcion}<br/>  
                   <strong>Categoria: </strong>{i.categoria}<br></br>                                 

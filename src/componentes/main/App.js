@@ -127,6 +127,8 @@ const [incidencias, setIncidencias] = useState ([
          }
         ]);
   
+  
+        
       
       const agregarIncidencia = (  nuevo_usuario, nuevo_titulo, nuevo_descripcion, nuevo_categoria, nuevo_nivel_urgencia,
     nuevo_ubicacion ) => {
@@ -141,7 +143,7 @@ const [incidencias, setIncidencias] = useState ([
 
       const nueva_incidencia = {
         id_incidencia: incidencias.length + 1,
-        usuario: nuevo_usuario,
+        id_usuario: nuevo_usuario,
         titulo: nuevo_titulo,            
         descripcion: nuevo_descripcion,
         categoria: nuevo_categoria,
@@ -176,7 +178,7 @@ const [incidencias, setIncidencias] = useState ([
            <MiLista incidencias = {incidencias}/>
         </main>
         <aside>
-          <Form agregarIncidencia = {agregarIncidencia}/>  
+          <Form agregarIncidencia = {agregarIncidencia}/>
         </aside>
       </div>
     <Footer/>
