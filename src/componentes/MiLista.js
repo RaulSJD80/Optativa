@@ -23,9 +23,9 @@ function MiLista(props) {
                   <strong>Titulo: </strong>{i.titulo}<br/>
                   <strong>Descripcion: </strong>{i.descripcion}<br/>  
                   <strong>Categoria: </strong>{i.categoria}<br></br>                                 
-                  <strong>Urgencia: </strong>{i.nivel}<br/>                 
+                  <strong>Urgencia: </strong>{i.nivel_urgencia}<br/>                 
                   <strong>Estado: </strong>{i.estado}<br/>
-                  <strong>Fecha de Registro: </strong>{i.fecha}<br/>
+                  <strong>Fecha de Registro: </strong>{i.fecha_registro}<br/>
                   <strong>Ubicacion: </strong>{i.ubicacion}<br/>
                 </li>
              ) )}

@@ -16,15 +16,15 @@ function Form (props){
         return(
             <div>
                 <h2>Registrar Incidencia</h2>
-                <form onSubmit={props.envioFormulario}>
+                <form onSubmit={envioFormulario}>
                     
-                    {/*Id Incidencia*/}
+                    {/*Id Incidencia
                     <div class ="element-form">
                         <label>Id Incidencia</label>
                         <input type = "number" name = "id" placeholder="Ej: 1,2,3,..." reqired/>                        
                     </div>
                     <br></br>
-                 
+                 */}
                     {/*Usuario*/}
                     <div class = "element-form">
                         <label>Usuario</label>
@@ -72,7 +72,7 @@ function Form (props){
                     </div>
                     <br></br>
 
-                    {/*Estado*/}
+                    {/*Estado
                     <div class ="element-form">
                         <label>Estado</label>
                         <select name ="estado" required>
@@ -83,14 +83,14 @@ function Form (props){
                         </select>
                     </div>
                     <br></br>
-                    
-                    {/*Fecha de Registro*/}
+                    */}
+                    {/*Fecha de Registro
                     <div class = "element-form">
                         <label>Fecha de Registro</label>
                         <input type="text" name ="fecha" required/>
                     </div>
                     <br></br>
-                    
+                    */}
                     {/*Ubicacion*/}
                     <div class ="element-form">
                         <label>Ubicacion</label>
