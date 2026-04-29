@@ -6,6 +6,7 @@ import Form from '../Formulario';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Fondo from '../../img/fondo2.jpg';
 import IncidentList from '../IncidentList';
+import Login from './Login';
 
 
 function App (){
@@ -33,7 +34,7 @@ useEffect(() => {
       console.error("Error al cargar las inicdencias: ", e);
     }
   }
-  const obtenerUsuarios = async () => {
+ /* const obtenerUsuarios = async () => {
     try{
       let response = await fetch (USUARIO_API_URL);
         if(!response.ok){
@@ -45,11 +46,42 @@ useEffect(() => {
     } catch (e){
       console.error("Error al cargar los usuarios: ", e);
     }
-  }
+  }*/
   
   obtenerIncidencias();
-  obtenerUsuarios();
+  //obtenerUsuarios();
 }, []);
+
+  // Funciones de logueado
+  const [usuarioLogin, setUsusarioLogin] = useState(null);
+  const API_LOGIN_URL = "http://localhost:3004/login";
+
+  const inicioSesion = async(email, password) => {
+    try {
+      const response = await fetch (API_LOGIN_URL, {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        }, 
+        body: JSON.stringify({"email": email, "password": password}),
+      });
+      if(response.ok) {
+        const data = await response.json();
+        setUsusarioLogin(data["users"]);
+        console.log("Login existoso. Usuario: ", data["users"]);
+        return true;
+      } else {
+         const errorData = await response.json();
+         alert(`Fallo de autenticacion. Error: ${response.status}: ${errorData}`);
+         return false;
+      }
+    } catch (error) {
+      console.error("Error de red al intentar el Login: ", error);
+      return false;
+    }
+  };
+
+
 
 
         
@@ -113,17 +145,22 @@ useEffect(() => {
 
   
   return (
-    <div className = "card" style = {{ backgroundImage : `url(${Fondo})`, backgroundSize: "cover", backgroundRepeat:"no-repeat" }}>
+    <div className = "card" style = {{ backgroundImage : `url(${Fondo})`, backgroundSize: "cover", 
+    backgroundRepeat:"no-repeat" }}>
     <Header/>
       <h2 className= 'mb-4 text-center'>Mi Aplicacion</h2>
       <div className = "contenedor-fluid mt-4 row">
-        <main className = 'col-md-6'>
-          <p>Esta aplicacion muestra el contenido almacenado de mi app:</p>
-           <IncidentList incidencias = {incidencias}/>
-        </main>
-        <aside className = 'col-md-6'>
-          <Form agregarIncidencia = {agregarIncidencia}/>
-        </aside>
+        {usuarioLogin ? (
+          <div>
+         <IncidentList incidencias = {incidencias}/>
+         <Form agregarIncidencia = {agregarIncidencia}/>
+         </div>
+         
+        
+        ) :
+        <Login inicioSesion = {inicioSesion}/>
+      }
+
       </div>
     <Footer/>
    
