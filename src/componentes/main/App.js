@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Fondo from '../../img/fondo2.jpg';
 import IncidentList from '../IncidentList';
 import Login from './Login';
+import {jwtDecode} from 'jwt-decode';
 
 
 function App (){
@@ -20,8 +21,45 @@ const USUARIO_API_URL = "http://localhost:3004/users";
 const [usuarios, setUsuarios] = useState([]);
 const [incidencias, setIncidencias] = useState ([]);
 
-useEffect(() => {
-  const obtenerIncidencias = async () => {
+
+
+
+
+
+
+
+  // Funciones de logueado
+  const [usuarioLogin, setUsuarioLogin] = useState(null);
+  const API_LOGIN_URL = "http://localhost:3004/login";
+
+  const onLogin = async (email, password) => {
+    try {
+      const response = await fetch(API_LOGIN_URL, {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        }, 
+        body: JSON.stringify({"email": email, "password": password}),
+      });
+      if(response.ok) {
+        const data = await response.json();
+        setUsuarioLogin(data["user"]);
+        localStorage.setItem("authToken", data["accessToken"]);
+        console.log("Login exitoso. Usuario: ", data["user"]);
+        return true;
+      } else {
+         const errorData = await response.json();
+         alert(`Fallo de autenticacion. Error: ${response.status}: ${errorData}`);
+         return false;
+      }
+    } catch (error) {
+      console.error("Error de red al intentar el Login: ", error);
+      return false;
+    }
+  };
+
+  useEffect(() => {
+      const obtenerIncidencias = async () => {
     try{
       let response  = await fetch (INCIDENCIA_API_URL);
       if(!response.ok){
@@ -34,52 +72,26 @@ useEffect(() => {
       console.error("Error al cargar las inicdencias: ", e);
     }
   }
- /* const obtenerUsuarios = async () => {
-    try{
-      let response = await fetch (USUARIO_API_URL);
-        if(!response.ok){
-        throw new Error("HTTP Error");
-      }
-      const data = await response.json();
-      console.log(data);
-      setUsuarios(data);
-    } catch (e){
-      console.error("Error al cargar los usuarios: ", e);
-    }
-  }*/
   
-  obtenerIncidencias();
-  //obtenerUsuarios();
-}, []);
 
-  // Funciones de logueado
-  const [usuarioLogin, setUsusarioLogin] = useState(null);
-  const API_LOGIN_URL = "http://localhost:3004/login";
 
-  const inicioSesion = async(email, password) => {
-    try {
-      const response = await fetch (API_LOGIN_URL, {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-        }, 
-        body: JSON.stringify({"email": email, "password": password}),
-      });
-      if(response.ok) {
-        const data = await response.json();
-        setUsusarioLogin(data["users"]);
-        console.log("Login existoso. Usuario: ", data["users"]);
-        return true;
-      } else {
-         const errorData = await response.json();
-         alert(`Fallo de autenticacion. Error: ${response.status}: ${errorData}`);
-         return false;
+  const obtenerUsuarioLogueado =  () => {
+    const savedUser = localStorage.getItem('authToken');
+    if(savedUser){
+      const decodedUser = jwtDecode(localStorage.getItem('authToken'));
+      console.log(decodedUser);
+      if(decodedUser){
+        const user = usuarios.find((u)=>u.email === decodedUser.email);
+        // si existe el usuario en TextDecoder, lo convertimos a objeto JSON
+        user ? setUsuarioLogin(user) : setUsuarioLogin(null);
       }
-    } catch (error) {
-      console.error("Error de red al intentar el Login: ", error);
-      return false;
     }
-  };
+   
+  }
+   
+  obtenerIncidencias();
+  obtenerUsuarioLogueado();
+}, [usuarios]);
 
 
 
@@ -158,7 +170,7 @@ useEffect(() => {
          
         
         ) :
-        <Login inicioSesion = {inicioSesion}/>
+        <Login onLogin= {onLogin}/>
       }
 
       </div>
