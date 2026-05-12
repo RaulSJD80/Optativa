@@ -100,7 +100,7 @@ function Form (props){
                     <br></br>
 
                     {/*Boton*/}           
-                    <button className="btn mx-auto d-grid" style ={{backgroundColor:"red"}} type = "submit">Registrar</button>
+                    <button className="btn mx-auto d-grid" style ={{backgroundColor:"green"}} type = "submit">Registrar</button>
                  </form>
             </div>
         )

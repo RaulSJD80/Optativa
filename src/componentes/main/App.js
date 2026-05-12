@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Fondo from '../../img/fondo2.jpg';
 import IncidentList from '../IncidentList';
 import Login from './Login';
+import menu from '../Menu';
 import {jwtDecode} from 'jwt-decode';
 
 
@@ -58,6 +59,30 @@ const [incidencias, setIncidencias] = useState ([]);
     }
   };
 
+  /*
+  const onMenu = async (accesToken) => {
+    try{
+      const response = await fetch ("http://localhost:3004/login", {
+        method: 'DELETE',
+        headers: {'Content-type': 'application/json',},
+        body: JSON.stringify({"accesToken" : accesToken}),
+      });
+    
+    if(response.ok){
+      const data = await response.json();
+      setUsuarioLogin(data["user"]);
+      localStorage.removeItem("authToken", data["authToken"]);
+      setUsuarioLogin(null);
+      console.log("Reset");
+      return true;
+    }
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+*/
+
   useEffect(() => {
       const obtenerIncidencias = async () => {
     try{
@@ -99,7 +124,7 @@ const [incidencias, setIncidencias] = useState ([]);
         
       
       const agregarIncidencia = async (  nuevo_titulo, nuevo_usuario, nuevo_descripcion, nuevo_categoria, nuevo_nivel_urgencia,
-    nuevo_ubicacion ) => {
+    nuevo_ubicacion, fechaFormateada ) => {
       try{
       const fecha = new Date();
       const year = fecha.getFullYear();
@@ -162,16 +187,21 @@ const [incidencias, setIncidencias] = useState ([]);
     <Header/>
       <h2 className= 'mb-4 text-center'>Mi Aplicacion</h2>
       <div className = "contenedor-fluid mt-4 row">
+        
         {usuarioLogin ? (
           <div>
          <IncidentList incidencias = {incidencias}/>
          <Form agregarIncidencia = {agregarIncidencia}/>
+          <menu onLogin = {onLogin}/>
          </div>
          
         
         ) :
         <Login onLogin= {onLogin}/>
-      }
+         
+        
+        }
+        
 
       </div>
     <Footer/>

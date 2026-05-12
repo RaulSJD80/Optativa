@@ -431,5 +431,18 @@
       "descripcion": "Administrador del sistema con permisos totales"
     }
   ],
-  "comentarios": []
+  "comentarios": [],
+
+  "fecha": [
+    {
+      "mes": 1
+      
+    },
+    {
+      "mes": 2
+
+    }
+  ]
+
+  
 }
