@@ -1,12 +1,21 @@
 
 import React from 'react';
-
-
+import { useState } from 'react';
+import cambiarEstado from './main/App';
 
 
 
 function IncidentList(props) {
-      return(
+
+  const cambioEstado = () => {
+    
+  }
+
+    
+  
+  
+ 
+        return(
             <table className = "table table-striped table-hover shadow-sm">
                 <thead>
                   <tr>
@@ -28,8 +37,10 @@ function IncidentList(props) {
                       <td>{i.usuario.email}</td>
                       <td>{i.nivel_urgencia}</td>
                       <td>{i.ubicacion}</td>
-                      <td>{i.estado}</td>
+                      <td>{i.estado}</td> 
+                      <td><button style ={{backgroundColor:"violet"}} onClick = {cambiarEstado} > Cambiar Estado</button></td>
                       <td>{i.fecha_registro}</td>
+                      
                 
                     </tr>
              ) )}

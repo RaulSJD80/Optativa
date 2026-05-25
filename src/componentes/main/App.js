@@ -1,5 +1,6 @@
 
 import React,{useState, useEffect} from 'react';
+import {Routes, Route, Link} from 'react-router-dom';
 import Header from '../header/Header';
 import Footer from '../footer/Footer';
 import Form from '../Formulario';
@@ -7,11 +8,18 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Fondo from '../../img/fondo2.jpg';
 import IncidentList from '../IncidentList';
 import Login from './Login';
-import menu from '../Menu';
-import {jwtDecode} from 'jwt-decode';
+import CerrarSesion from '../CerrarSesion';
+import Inicio from '../Inicio';
+import UserForm from '../UserForm';
+import RoleManagement from '../UserRoleManagement';
+import { jwtDecode } from 'jwt-decode';
+import { createContext } from 'react';
+export const AuthContext = createContext();
 
 
 function App (){
+
+  
 
 //Definir la URL de la API para incidencias
 const INCIDENCIA_API_URL = "http://localhost:3004/incidencias";
@@ -19,10 +27,70 @@ const INCIDENCIA_API_URL = "http://localhost:3004/incidencias";
 const USUARIO_API_URL = "http://localhost:3004/users";
 
 
-const [usuarios, setUsuarios] = useState([]);
+const [users, setUsuarios] = useState([]);
 const [incidencias, setIncidencias] = useState ([]);
+const nuevo_usuario = useState([]);
+
+  //Añadir usuario
+  const agregarUsuario = async (nuevo_nombre, nuevo_email, nuevo_password, nuevo_rol, fechaFormateada) => {
+    try{
+      let usuarioEncontrado = users.find((u) => u.email === users.email);
+      if(!usuarioEncontrado){
+          nuevo_usuario = {
+          nombre : nuevo_nombre,
+          email : nuevo_email,
+          password : nuevo_password,
+          rol : nuevo_rol,
+          fecha_registro : fechaFormateada
+        }
+
+        let response = await fetch (USUARIO_API_URL,{
+          method: 'POST',
+          headers: {'Content-Type' : 'application/json'},
+          body: JSON.stringify(nuevo_usuario)
+        });
+        if(!response.ok){
+          throw new Error(`Fallo de la peticion POST. Estado HTTP: ${response.status}` );
+        }
+        let data = await response.json();
+        console.log("Nuevo_usuario: ", data);
+        setUsuarios([...users, data]);
+      }else{
+        alert("Ususario ya existe");
+        throw new Error('Error al crear usuario. Usuario ya existe');
+      }
+    }catch (error){
+      console.error("Error en la peticion POST", error.message);
+    }
+  }
+   
+    //Cambio de rol metodo PATCH
+
+   // const {nombre_rol} = users.rol;
+  const cambioRol = async () => {
+    try{
+      let response = await fetch (USUARIO_API_URL,{
+        method: 'PATCH',
+        headers: {'Content-Type' : 'application/json'},
+        body:JSON.stringify({nuevo_rol: users["rol"].nombre_rol}),
+      });
+      if(response.ok){
+        let data = await response.json();
+        console.log("Nuevo rol: ",data);
+        setUsuarios([...users["rol"].nombre_rol, data]);
+      }else{
+        alert("Ya tiene ese rol");
+      }
+    }catch (error){
+      console.error("Error en la peticion PATCH", error.message);
+    }
+
+  }
 
 
+   
+  
+      
 
 
 
@@ -59,29 +127,20 @@ const [incidencias, setIncidencias] = useState ([]);
     }
   };
 
-  /*
-  const onMenu = async (accesToken) => {
-    try{
-      const response = await fetch ("http://localhost:3004/login", {
-        method: 'DELETE',
-        headers: {'Content-type': 'application/json',},
-        body: JSON.stringify({"accesToken" : accesToken}),
-      });
-    
-    if(response.ok){
-      const data = await response.json();
-      setUsuarioLogin(data["user"]);
-      localStorage.removeItem("authToken", data["authToken"]);
-      setUsuarioLogin(null);
-      console.log("Reset");
-      return true;
-    }
-  } catch (error) {
-    console.error(error);
-    return false;
-  }
-};
-*/
+  //Borrado de usuario logueado
+  const offLogin = () => {
+   const usuario = localStorage.getItem('authToken');
+   
+   if(usuario){
+    localStorage.removeItem('authToken');
+    setUsuarioLogin(null);
+   }
+  };
+
+
+  
+
+  
 
   useEffect(() => {
       const obtenerIncidencias = async () => {
@@ -97,6 +156,22 @@ const [incidencias, setIncidencias] = useState ([]);
       console.error("Error al cargar las inicdencias: ", e);
     }
   }
+
+  const obtenerUsuarios = async () => {
+    try{
+      let response = await fetch (USUARIO_API_URL);
+      if(!response.ok){
+        throw new Error("HTTP Error");
+      }
+      const data = await response.json();
+      console.log(data);
+      setUsuarios(data);
+    } catch (e){
+      console.error("Error al cargar usuarios: ", e);
+    }
+  }
+
+  
   
 
 
@@ -106,7 +181,7 @@ const [incidencias, setIncidencias] = useState ([]);
       const decodedUser = jwtDecode(localStorage.getItem('authToken'));
       console.log(decodedUser);
       if(decodedUser){
-        const user = usuarios.find((u)=>u.email === decodedUser.email);
+        const user = users.find((u)=>u.email === decodedUser.email);
         // si existe el usuario en TextDecoder, lo convertimos a objeto JSON
         user ? setUsuarioLogin(user) : setUsuarioLogin(null);
       }
@@ -115,14 +190,15 @@ const [incidencias, setIncidencias] = useState ([]);
   }
    
   obtenerIncidencias();
+  obtenerUsuarios();
   obtenerUsuarioLogueado();
-}, [usuarios]);
+}, [users]);
 
 
 
 
         
-      
+      //Añadimos incidencias
       const agregarIncidencia = async (  nuevo_titulo, nuevo_usuario, nuevo_descripcion, nuevo_categoria, nuevo_nivel_urgencia,
     nuevo_ubicacion, fechaFormateada ) => {
       try{
@@ -132,7 +208,7 @@ const [incidencias, setIncidencias] = useState ([]);
       const day = String(fecha.getDate()).padStart(2, '0');
       const fechaFormateada = (new Date().toISOString);
 
-      let usuarioEncontrado = usuarios.find((u) => u.email === nuevo_usuario);
+      let usuarioEncontrado = users.find((u) => u.email === nuevo_usuario);
       if(usuarioEncontrado){
            const nueva_incidencia = {
          titulo: nuevo_titulo, 
@@ -171,51 +247,105 @@ const [incidencias, setIncidencias] = useState ([]);
     }
   }
 
+  //Cambiar estado
+
+  const cambiarEstado = async() => {
+    try{
+      let response = await fetch (INCIDENCIA_API_URL ,{
+        method: 'PATCH',
+        headers: {'Content-Type' : 'application/json'},
+        body:JSON.stringify({estado: incidencias["estado"]}),
+      });
+       if(response.ok){
+        let data = await response.json();
+        console.log("Nuevo estado: ",data);
+        setIncidencias([...incidencias["estado"], data]);
+      }else{
+        alert("Incidencia esta cerrada");
+      }
+    }catch (error){
+      console.error("Error en la peticion PATCH", error.message);
+    }
+
+  }
+
+  
+
     
 
 
 
-
+    
   
 
   
 
   
   return (
+
     <div className = "card" style = {{ backgroundImage : `url(${Fondo})`, backgroundSize: "cover", 
     backgroundRepeat:"no-repeat" }}>
-    <Header/>
-      <h2 className= 'mb-4 text-center'>Mi Aplicacion</h2>
+      <Header/>
       <div className = "contenedor-fluid mt-4 row">
         
-        {usuarioLogin ? (
-          <div>
-         <IncidentList incidencias = {incidencias}/>
-         <Form agregarIncidencia = {agregarIncidencia}/>
-          <menu onLogin = {onLogin}/>
-         </div>
-         
+
+           <nav>
+        <ul>
+          <li><Link to ="/">Inicio</Link></li>
+          <li><Link to = "login">Inicio Sesion</Link></li>
+          <li><Link to= "incidencia">Ver Incidencias</Link></li>
+          <li><Link to = "formulario">Registrar Incidencia</Link></li>
+          <li><Link to = "registro_usuario">Registro Usuario</Link></li>
+          <li><Link to = "lista_usuarios">Usuarios</Link></li>
+          <li><Link to = "cerrarsesion">Cerrar Sesion</Link></li>
+        </ul>
+      </nav>
+
+      <Routes>
+        <Route path = "/" element = {<Inicio /> } />
+        <Route path = "login" element = {<Login />} />
+        <Route path = "incidencia" element = {<IncidentList incidencias = {incidencias} />} /> 
+        <Route path = "formulario" element = {<Form />} />
+        <Route path = "registro_usuario" element = {<UserForm />} /> 
+        <Route path = "lista_usuarios" element = {<RoleManagement users = {users} />} />
+      
         
-        ) :
-        <Login onLogin= {onLogin}/>
-         
-        
-        }
         
 
-      </div>
-    <Footer/>
-   
-    
+      </Routes>
 
-     
-   </div>
+              
+
     
+    
+    
+    
+    
+     </div>
+      <Footer/>
+     </div>
   );
 
 }
+    {/*
+      <Inicio/>
+      
+        
 
-
-
+        {usuarioLogin  ? (
+          <div>
+             <AuthContext.Provider value = {{usuarioLogin, offLogin}}>
+              <CerrarSesion/>
+             </AuthContext.Provider>
+           <IncidentList incidencias = {incidencias}/>
+           <Form agregarIncidencia = {agregarIncidencia}/>
+           
+            
+         </div>
+        ) : (
+        <Login onLogin= {onLogin}/>
+        )
+        } 
+    */}
 
 export default App;

@@ -303,12 +303,13 @@
       "nombre": "Ana",
       "email": "ana.lopez@educastur.org",
       "password": "$2y$10$paOaxwKhEBC4W/cVeG85puc9W/hoMlzquXQ/6hrMD6VdqIc/mEToq",
-      "rol": {
+       "rol": {
         "id": 1,
         "nombre_rol": "comun",
         "descripcion": "Usuario regular del sistema"
       },
       "fecha_registro": "2025-10-21"
+      
     },
     {
       "id": 2,
@@ -321,13 +322,14 @@
         "descripcion": "Usuario regular del sistema"
       },
       "fecha_registro": "2025-10-21"
+      
     },
     {
       "id": 3,
       "nombre": "Maria",
       "email": "maria.garcia@educastur.org",
       "password": "$2y$10$OsAG7turiy1u.Hqt7JHNzOP6.x1u3RPn0eVndlAGWRx2Vg8iU.lKG",
-      "rol": {
+       "rol": {
         "id": 1,
         "nombre_rol": "comun",
         "descripcion": "Usuario regular del sistema"
@@ -339,7 +341,7 @@
       "nombre": "Luis",
       "email": "luis.torres@educastur.org",
       "password": "$2y$10$gU1byqj/EyDQbUIFaV1b0.vKiCkE3oZZ1BxfVCSxO7z8Y/QIhqmo6",
-      "rol": {
+       "rol": {
         "id": 1,
         "nombre_rol": "comun",
         "descripcion": "Usuario regular del sistema"
@@ -367,7 +369,7 @@
         "id": 1,
         "nombre_rol": "comun",
         "descripcion": "Usuario regular del sistema"
-      },
+      }, 
       "fecha_registro": "2025-10-21"
     },
     {
