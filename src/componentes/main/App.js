@@ -12,6 +12,7 @@ import CerrarSesion from '../CerrarSesion';
 import Inicio from '../Inicio';
 import UserForm from '../UserForm';
 import RoleManagement from '../UserRoleManagement';
+import Menu from './Menu';
 import { jwtDecode } from 'jwt-decode';
 import { createContext } from 'react';
 export const AuthContext = createContext();
@@ -65,38 +66,28 @@ const nuevo_usuario = useState([]);
   }
    
     //Cambio de rol metodo PATCH
-
-   // const {nombre_rol} = users.rol;
-  const cambioRol = async () => {
-    try{
-      let response = await fetch (USUARIO_API_URL,{
-        method: 'PATCH',
-        headers: {'Content-Type' : 'application/json'},
-        body:JSON.stringify({nuevo_rol: users["rol"].nombre_rol}),
-      });
-      if(response.ok){
-        let data = await response.json();
-        console.log("Nuevo rol: ",data);
-        setUsuarios([...users["rol"].nombre_rol, data]);
-      }else{
-        alert("Ya tiene ese rol");
+    const cambiarRol = async () => {
+      try{
+        const response = await fetch (USUARIO_API_URL, {
+          method: 'PATCH',
+          headers: {'Content - Type' : 'application/json'},
+          body: JSON.stringify({
+            rol: {
+              nombre_rol: users.rol.nombre_rol
+            }
+          })
+        });
+        const data = await response.json();
+        console.log("Rol actualizado");
+        setUsuarios(data);
+      }catch (error){
+        console.error("Error al enviar la peticion patch ", error);
       }
-    }catch (error){
-      console.error("Error en la peticion PATCH", error.message);
     }
 
-  }
 
 
    
-  
-      
-
-
-
-
-
-
   // Funciones de logueado
   const [usuarioLogin, setUsuarioLogin] = useState(null);
   const API_LOGIN_URL = "http://localhost:3004/login";
@@ -247,28 +238,28 @@ const nuevo_usuario = useState([]);
     }
   }
 
-  //Cambiar estado
-
-  const cambiarEstado = async() => {
+  // Cambiar Estado
+  const cambiarEstado = async (nuevo_estado) => {
     try{
-      let response = await fetch (INCIDENCIA_API_URL ,{
+      const response = await fetch ( "http://localhost:3004/incidencias/estado", {
         method: 'PATCH',
-        headers: {'Content-Type' : 'application/json'},
-        body:JSON.stringify({estado: incidencias["estado"]}),
+        headers: {'Content - Type' : 'application/json'},
+        body: JSON.stringify({estado: nuevo_estado}),
+
       });
-       if(response.ok){
-        let data = await response.json();
-        console.log("Nuevo estado: ",data);
-        setIncidencias([...incidencias["estado"], data]);
+      if(response.ok){
+        const data = await response.json();
+        console.log("Estado: ",data);
+        setIncidencias(data);
       }else{
-        alert("Incidencia esta cerrada");
+        console.error("Error al actualizar el objeto");
       }
     }catch (error){
-      console.error("Error en la peticion PATCH", error.message);
+        console.error("Error de actualizacion: ", error);
     }
-
   }
 
+  
   
 
     
@@ -287,32 +278,39 @@ const nuevo_usuario = useState([]);
     backgroundRepeat:"no-repeat" }}>
       <Header/>
       <div className = "contenedor-fluid mt-4 row">
+        {/*
+        <Inicio/>
+        <IncidentList incidencias = {incidencias}/>
+         <Form agregarIncidencia = {agregarIncidencia}/>
+         */}   
+        <Menu incidencias = {incidencias} users = {users}>
+
+        {usuarioLogin  ? (
+          <div>
+             <AuthContext.Provider value = {{usuarioLogin, offLogin}}>
+              <CerrarSesion/>
+             </AuthContext.Provider>            
+          </div>
+        ) : (
+        <div>
+          <Login onLogin={onLogin} />          
+        </div>
+        )
+      } 
+      </Menu>    
+     </div>
+      <Footer/>
+     </div>
+  );
+
+}
+    
+
+export default App;
+
         
 
-           <nav>
-        <ul>
-          <li><Link to ="/">Inicio</Link></li>
-          <li><Link to = "login">Inicio Sesion</Link></li>
-          <li><Link to= "incidencia">Ver Incidencias</Link></li>
-          <li><Link to = "formulario">Registrar Incidencia</Link></li>
-          <li><Link to = "registro_usuario">Registro Usuario</Link></li>
-          <li><Link to = "lista_usuarios">Usuarios</Link></li>
-          <li><Link to = "cerrarsesion">Cerrar Sesion</Link></li>
-        </ul>
-      </nav>
-
-      <Routes>
-        <Route path = "/" element = {<Inicio /> } />
-        <Route path = "login" element = {<Login />} />
-        <Route path = "incidencia" element = {<IncidentList incidencias = {incidencias} />} /> 
-        <Route path = "formulario" element = {<Form />} />
-        <Route path = "registro_usuario" element = {<UserForm />} /> 
-        <Route path = "lista_usuarios" element = {<RoleManagement users = {users} />} />
-      
-        
-        
-
-      </Routes>
+       
 
               
 
@@ -320,32 +318,6 @@ const nuevo_usuario = useState([]);
     
     
     
+  
     
-     </div>
-      <Footer/>
-     </div>
-  );
-
-}
-    {/*
-      <Inicio/>
       
-        
-
-        {usuarioLogin  ? (
-          <div>
-             <AuthContext.Provider value = {{usuarioLogin, offLogin}}>
-              <CerrarSesion/>
-             </AuthContext.Provider>
-           <IncidentList incidencias = {incidencias}/>
-           <Form agregarIncidencia = {agregarIncidencia}/>
-           
-            
-         </div>
-        ) : (
-        <Login onLogin= {onLogin}/>
-        )
-        } 
-    */}
-
-export default App;
