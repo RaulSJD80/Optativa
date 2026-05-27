@@ -8,7 +8,7 @@ function UserForm (props){
         event.preventDefault();
         const user = event.target;
         props.agregarUsuario(user.nombre.value, user.email.value, user.password.value, 
-            user.rol.value
+            user.rol.value, user.fecha_registro.value
         );
     };
 
@@ -43,6 +43,11 @@ function UserForm (props){
                     <input className = "mb-3 form-control" type ="text" name = "rol" required/>
                 </div>
                 <br/>
+                {/*Fecha Registro*/}
+                 <div>
+                    <label className = "mb-3 form-label">Fecha Registro</label>
+                    <input className = "mb-3 form-control" type ="date" name = "feche_registro" required/>
+                </div>
                 <button className="btn mx-auto d-grid" style ={{backgroundColor:"orange"}} type = "submit">Registrar</button>
               
 

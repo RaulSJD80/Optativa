@@ -3,18 +3,9 @@ import { useState } from "react";
 
 
 
-function RoleManagement (props){
-
-    const data = useState([]);
-    const cambiarRol = () => {
-      if(data.users["rol"].nombre_rol === "comun"){
-        (data.users["rol"].nombre_rol = "admin");
-      }else {
-        (data.users["rol"].nombre_rol = "comun");
-      }
-    }
-  
-  
+function RoleManagement ({props, actualizarRol}){
+ 
+     
 
 
 
@@ -41,7 +32,7 @@ function RoleManagement (props){
                       <td>{u.rol.nombre_rol}</td>
                       <td>{u.fecha_registro}</td>
                       <td>
-                        <button className="btn mx-auto d-grid" style ={{backgroundColor:"yellow"}} onClick = {cambiarRol}>Cambiar Rol</button>
+                        <button className="btn mx-auto d-grid" style ={{backgroundColor:"yellow"}} >Cambiar Rol</button>
                       </td>
                 
                     </tr>
@@ -62,5 +53,6 @@ function RoleManagement (props){
 
     );
 }
+
 
 export default RoleManagement;
